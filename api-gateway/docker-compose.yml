@@ -1,0 +1,22 @@
+version: "3"
+services:
+    api-gateway:
+        container_name: api-gateway
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 8002:8002
+            - 8006:8006
+        environment:
+            GIN_MODE: release
+            DB_CONNECTION_STRING: postgres://username:password@postgres-db:5432/gateway
+        networks:
+            - backend-network
+            - reverse-proxy-network
+    
+networks:
+    backend-network:
+        external: true
+    reverse-proxy-network:
+        external: true
