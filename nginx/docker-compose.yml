@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./includes:/etc/nginx/includes
+      - /etc/letsencrypt/live/node404.com-0001/privkey.pem:/etc/letsencrypt/live/node404.com/privkey.pem
+      - /etc/letsencrypt/live/node404.com-0001/fullchain.pem:/etc/letsencrypt/live/node404.com/fullchain.pem
+    networks:
+      - reverse-proxy-network
+
+networks:
+  reverse-proxy-network:
+    external: true
