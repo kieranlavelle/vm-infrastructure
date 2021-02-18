@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    expose:
+      - "80"
+    ports:
+      - 9001:9000
+      - 8001:8000
+    environment:
+      VIRTUAL_PORT: 9001
+      VIRTUAL_HOST: portainer.node404.com
+      LETSENCRYPT_HOST: portainer.node404.com
+      LETSENCRYPT_EMAIL: kmplavelle@gmail.com
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - webproxy
+      - reverse-proxy-network
+
+
+volumes:
+  portainer_data:
+networks:
+  webproxy:
+    external: true
+  reverse-proxy-network:
+    external: true
