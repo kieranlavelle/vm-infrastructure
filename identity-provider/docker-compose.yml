@@ -1,0 +1,22 @@
+version: "3"
+services:
+    identity-api:
+        container_name: identity-provider
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 8000:8000
+        environment:
+            DB_CONNECTION_STRING: postgres://username:password@postgres-db:5432/auth
+            GATEWAY_ADDRESS: https://gateway.node404.com
+            PASSWORD_HASH: PLEASE_PASTE
+        networks:
+            - backend-network
+            - reverse-proxy-network
+    
+networks:    
+    backend-network:
+        external: true
+    reverse-proxy-network:
+        external: true

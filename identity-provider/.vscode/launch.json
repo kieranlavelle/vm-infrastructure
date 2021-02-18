@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/cmd/start.go",
+            "env": {
+                "DB_CONNECTION_STRING": "postgres://rootnodeuser:t5G5jkWerpmF@127.0.0.1:5432/auth",
+                "GATEWAY_ADDRESS": "http://127.0.0.1:8002",
+                "PASSWORD_HASH": "2JYUSNVGw1ALTA9j7dVSAHsTocpIPtvtpfPVjswvDeZ3Y3BmEnQYGo2RBXrs2nL43ohF32uYTwYNjVITfJLJk8iYbso"
+            }
+        }
+    ]
+}
