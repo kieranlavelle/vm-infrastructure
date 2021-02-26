@@ -44,7 +44,7 @@ func getToken(c *gin.Context, user User) (string, error) {
 	tokenData := token{}
 	// gatewayAddress := fmt.Sprintf("%v/token", os.Getenv("GATEWAY_ADDRESS"))
 
-	resp, err := http.PostForm("api-gateway:8006/token", url.Values{
+	resp, err := http.PostForm("http://api-gateway:8006/token", url.Values{
 		"username": {user.Username},
 	})
 	if err != nil {

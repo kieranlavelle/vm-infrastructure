@@ -38,7 +38,6 @@ func CreateRoutes() {
 	// version the api
 	router.POST("/login", loginEndpoint)
 	router.POST("/register", registerEndpoint)
-	router.GET("/:application/:path", wildcardHandler)
 
 	router.Run("0.0.0.0:8000")
 }
