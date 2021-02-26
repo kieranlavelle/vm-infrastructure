@@ -37,7 +37,7 @@ func RouteRequests(ctx *gin.Context, conn *pgx.Conn, username string) {
 
 	proxy := createProxy(ctx, containerName, application, containerPort)
 
-	ctx.Request.Header.Add("X-Authenticated-Userid", username)
+	ctx.Request.Header.Set("X-Authenticated-Userid", username)
 
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
 
@@ -64,7 +64,7 @@ func CreateRoutes() *gin.Engine {
 		)
 	}))
 
-	router.Any("/:application/:path", func(c *gin.Context) { auth.CheckUser(c, conn, RouteRequests) })
+	router.Any("/:application/*path", func(c *gin.Context) { auth.CheckUser(c, conn, RouteRequests) })
 
 	return router
 }
