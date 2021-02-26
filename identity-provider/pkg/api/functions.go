@@ -6,12 +6,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
@@ -44,20 +42,13 @@ func hashPassword(password string) string {
 func getToken(c *gin.Context, user User) (string, error) {
 
 	tokenData := token{}
-	gatewayAddress := fmt.Sprintf("%v/token", os.Getenv("GATEWAY_ADDRESS"))
-	httpClient := http.Client{}
+	// gatewayAddress := fmt.Sprintf("%v/token", os.Getenv("GATEWAY_ADDRESS"))
 
-	body := strings.NewReader(url.Values{"username": {user.Username}}.Encode())
-	req, err := http.NewRequest("POST", gatewayAddress, body)
+	resp, err := http.PostForm("api-gateway:8006/token", url.Values{
+		"username": {user.Username},
+	})
 	if err != nil {
 		log.Printf("error creating request: %v\n", err)
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return "", err
-	}
-
-	resp, err := httpClient.Do(req)
-	if err != nil {
-		log.Printf("error making request: %v\n", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return "", err
 	}
