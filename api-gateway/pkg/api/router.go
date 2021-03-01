@@ -8,12 +8,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 
 	auth "github.com/kieranlavelle/api_gateway/pkg/auth"
 )
 
 // RouteRequests takes the application from the path and routes the request
-func RouteRequests(ctx *gin.Context, conn *pgx.Conn, username string) {
+func RouteRequests(ctx *gin.Context, conn *pgxpool.Pool, username string) {
 
 	application := ctx.Param("application")
 	var containerName string
@@ -22,27 +23,23 @@ func RouteRequests(ctx *gin.Context, conn *pgx.Conn, username string) {
 	rows := getAPIProxy(application, conn)
 	err := rows.Scan(&containerName, &containerPort)
 	if err != nil {
-		log.Panicf("error getting address rows: %v\n", err)
+		log.Printf("error getting address rows: %v\n", err)
 		switch err {
 		case pgx.ErrNoRows:
 			ctx.JSON(http.StatusBadRequest, gin.H{
 				"detail": "no application found",
 			})
-			return
 		default:
 			ctx.JSON(http.StatusInternalServerError, gin.H{
 				"detail": "please try again later.",
 			})
-			return
 		}
+		return
 	}
 
 	proxy := createProxy(ctx, containerName, application, containerPort)
-
 	ctx.Request.Header.Set("X-Authenticated-Userid", username)
-
 	proxy.ServeHTTP(ctx.Writer, ctx.Request)
-
 }
 
 // CreateRoutes creates all of the routes and sets up the database connection

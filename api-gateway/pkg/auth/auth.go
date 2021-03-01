@@ -10,7 +10,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 // TokenEntry holds token information
@@ -28,7 +28,7 @@ type User struct {
 }
 
 // CheckUser checks that the token from the request is valid and passes the user information to the handler
-func CheckUser(ctx *gin.Context, conn *pgx.Conn, handler func(*gin.Context, *pgx.Conn, string)) {
+func CheckUser(ctx *gin.Context, conn *pgxpool.Pool, handler func(*gin.Context, *pgxpool.Pool, string)) {
 	user, err := tokenValid(ctx.Request)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, "Invalid Token.")
