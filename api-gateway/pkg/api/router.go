@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -21,6 +22,7 @@ func RouteRequests(ctx *gin.Context, conn *pgx.Conn, username string) {
 	rows := getAPIProxy(application, conn)
 	err := rows.Scan(&containerName, &containerPort)
 	if err != nil {
+		log.Panicf("error getting address rows: %v\n", err)
 		switch err {
 		case pgx.ErrNoRows:
 			ctx.JSON(http.StatusBadRequest, gin.H{
