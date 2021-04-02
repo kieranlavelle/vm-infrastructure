@@ -58,7 +58,7 @@ func registerEndpoint(ctx *gin.Context) {
 		return
 	}
 
-	if len(user.Username) < 3 || len(user.Username) > 20 {
+	if len(user.Username) < 3 || len(user.Username) > 60 {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"detail": "usernames must be between 3 and 12 chars",
 		})
