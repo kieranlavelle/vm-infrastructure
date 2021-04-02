@@ -58,7 +58,7 @@ func registerEndpoint(ctx *gin.Context) {
 		return
 	}
 
-	if len(user.Username) < 3 || len(user.Username) > 12 {
+	if len(user.Username) < 3 || len(user.Username) > 20 {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"detail": "usernames must be between 3 and 12 chars",
 		})
@@ -68,13 +68,6 @@ func registerEndpoint(ctx *gin.Context) {
 	if len(user.Password) < 8 || len(user.Password) > 60 {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"detail": "passwords must be between 8 and 60 chars",
-		})
-		return
-	}
-
-	if !isEmailValid(user.Email) {
-		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"detail": "please provide a valid email message",
 		})
 		return
 	}
